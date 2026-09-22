@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#050505" />
+  <meta name="description" content="A guided self-employed business-loan discovery prototype." />
+  <title>Arthora Capital</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="prototype-ribbon">Interactive concept prototype · No real application is submitted</div>
+  <header class="topbar">
+    <a class="brand" id="homeLink" href="#" aria-label="Arthora Capital home">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span></span>
+      <span><strong>Arthora</strong><small>Capital</small></span>
+    </a>
+    <div class="top-actions">
+      <button class="icon-button" id="supportButton" type="button" aria-label="Get help">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a8 8 0 1 1-3.4-6.55M20 4v5h-5"/></svg>
+        Need help?
+      </button>
+      <span class="secure-label">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3M6 10h12v10H6z"/></svg>
+        Secure & confidential
+      </span>
+      <button class="account-login" id="loginButton" type="button">Log in</button>
+      <button class="account-chip" id="accountButton" type="button" hidden><span>AM</span><b>My account</b></button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <aside class="journey" aria-label="Application progress">
+      <div class="journey-intro">
+        <span class="eyebrow">Your journey</span>
+        <h2>From uncertainty to a clear next step.</h2>
+      </div>
+      <ol id="stepList">
+        <li class="active" data-step="0"><span>1</span><div><strong>Discover</strong><small>What you need</small></div></li>
+        <li data-step="1"><span>2</span><div><strong>Understand</strong><small>How your business earns</small></div></li>
+        <li data-step="2"><span>3</span><div><strong>Prepare</strong><small>What proves it</small></div></li>
+        <li data-step="3"><span>4</span><div><strong>Decide</strong><small>What fits and why</small></div></li>
+        <li data-step="4"><span>5</span><div><strong>Apply</strong><small>With confidence</small></div></li>
+      </ol>
+      <div class="journey-promise">
+        <span class="promise-icon">✓</span>
+        <p><strong>Checking your fit won’t affect your credit score.</strong><br />We ask permission before any bureau check.</p>
+      </div>
+    </aside>
+
+    <section class="workspace" aria-live="polite">
+      <div class="mobile-progress" aria-hidden="true">
+        <div><span id="mobileStep">Step 1 of 5</span><strong id="mobileLabel">Discover</strong></div>
+        <div class="progress-track"><span id="progressFill"></span></div>
+      </div>
+
+      <section class="screen active" data-screen="0">
+        <div class="hero-grid">
+          <div>
+            <div class="hero-sparks" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span class="eyebrow accent">Loans that understand your business</span>
+            <h1>Know what you can qualify for, before you apply.</h1>
+            <p class="lead">A guided eligibility check designed around self-employed income. See your likely fit, document path and indicative offer in about 3 minutes.</p>
+            <div class="button-row">
+              <button class="button primary" data-next="1" type="button">Check my eligibility <span>→</span></button>
+              <button class="button text" id="demoButton" type="button">Preview sample journey</button>
+            </div>
+            <div class="hero-assurance"><span>✓ No credit-score impact</span><span>✓ No application fee</span><span>✓ No obligation</span></div>
+          </div>
+          <div class="eligibility-preview" aria-label="The journey considers your income profile, documents and offer fit">
+            <div class="preview-top"><span>Eligibility preview</span><i></i></div>
+            <div class="preview-symbol" aria-hidden="true"><span></span><span></span></div>
+            <div class="preview-copy"><small>Built for the way your business earns</small><strong>Your profile.<br />A clearer answer.</strong></div>
+            <div class="preview-progress" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="preview-labels"><span>Income</span><span>Documents</span><span>Offer</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="1">
+        <div class="screen-header">
+          <span class="eyebrow accent">Let’s understand the need</span>
+          <h1>What would the loan help your business do?</h1>
+          <p>We use this to assess a suitable amount and tenure—not to limit how you run your business.</p>
+        </div>
+        <div class="form-stack">
+          <fieldset>
+            <legend>Primary loan purpose</legend>
+            <div class="choice-grid purpose-grid" data-choice="purpose">
+              <button class="choice selected" type="button" data-value="Working capital"><span class="choice-icon">↗</span><strong>Working capital</strong><small>Manage stock, invoices or cash flow</small></button>
+              <button class="choice" type="button" data-value="Equipment"><span class="choice-icon">⚙</span><strong>Equipment</strong><small>Purchase tools or machinery</small></button>
+              <button class="choice" type="button" data-value="Expansion"><span class="choice-icon">＋</span><strong>Business expansion</strong><small>Open, renovate or grow</small></button>
+              <button class="choice" type="button" data-value="Other"><span class="choice-icon">◇</span><strong>Other business need</strong><small>Tell us in the application</small></button>
+            </div>
+          </fieldset>
+          <div class="field-grid">
+            <label class="field"><span>Amount you have in mind</span><div class="input-prefix"><b>₹</b><input id="requestedAmount" type="number" min="100000" max="5000000" step="50000" value="800000" /></div><small>₹1 lakh – ₹50 lakh</small></label>
+            <label class="field"><span>How long have you been in business?</span><select id="businessVintage"><option value="6">Less than 1 year</option><option value="18">1–2 years</option><option value="48" selected>2–5 years</option><option value="84">More than 5 years</option></select><small>Current business or profession</small></label>
+          </div>
+          <div class="why-card"><button class="why-toggle" type="button" aria-expanded="false"><span>?</span><strong>Why do we ask this?</strong><em>＋</em></button><p>Loan purpose and business vintage help us estimate the right product, amount and repayment period. They do not trigger a credit check.</p></div>
+        </div>
+        <div class="screen-actions"><button class="button secondary" data-back="0" type="button">← Back</button><button class="button primary" data-next="2" type="button">Continue <span>→</span></button></div>
+      </section>
+
+      <section class="screen" data-screen="2">
+        <div class="screen-header">
+          <span class="eyebrow accent">Your income profile</span>
+          <h1>Which description feels most like your business?</h1>
+          <p>There is no “wrong” pattern. This helps us look for the right proof of income.</p>
+        </div>
+        <fieldset>
+          <legend>How does your income usually arrive?</legend>
+          <div class="choice-grid income-grid" data-choice="incomeProfile">
+            <button class="choice selected" type="button" data-value="steady"><span class="mini-chart steady"><i></i><i></i><i></i><i></i></span><strong>Fairly steady</strong><small>Similar revenue most months</small></button>
+            <button class="choice" type="button" data-value="seasonal"><span class="mini-chart seasonal"><i></i><i></i><i></i><i></i></span><strong>Seasonal</strong><small>Strong and quiet months</small></button>
+            <button class="choice" type="button" data-value="mixed"><span class="mini-chart mixed"><i></i><i></i><i></i><i></i></span><strong>Mixed payments</strong><small>Cash, UPI and bank transfers</small></button>
+            <button class="choice" type="button" data-value="project"><span class="mini-chart project"><i></i><i></i><i></i><i></i></span><strong>Project-based</strong><small>Larger, less frequent payments</small></button>
+          </div>
+        </fieldset>
+        <div class="field-grid three">
+          <label class="field"><span>Average monthly revenue</span><div class="input-prefix"><b>₹</b><input id="monthlyRevenue" type="number" min="25000" max="10000000" step="10000" value="350000" /></div><small>A 6–12 month estimate is fine</small></label>
+          <label class="field"><span>Existing monthly EMIs</span><div class="input-prefix"><b>₹</b><input id="existingEmi" type="number" min="0" step="1000" value="18000" /></div><small>Business and personal loans</small></label>
+          <label class="field"><span>Payments visible digitally</span><div class="range-label"><strong id="digitalValue">70%</strong><span>of revenue</span></div><input id="digitalShare" class="range" type="range" min="0" max="100" value="70" /></label>
+        </div>
+        <div class="question-row">
+          <div><strong>Do you file income-tax returns?</strong><small>Individual or business ITR</small></div>
+          <div class="segmented" data-toggle="itr"><button type="button" class="selected" data-value="yes">Yes</button><button type="button" data-value="no">Not yet</button></div>
+        </div>
+        <div class="question-row">
+          <div><strong>Is the business GST-registered?</strong><small>Not mandatory for every business type</small></div>
+          <div class="segmented" data-toggle="gst"><button type="button" class="selected" data-value="yes">Yes</button><button type="button" data-value="no">No</button></div>
+        </div>
+        <div class="signal-card" id="liveSignal"><span id="liveSignalIcon">✓</span><p><strong id="liveSignalTitle">Good signal</strong><small id="liveSignalCopy">Digital transaction history can help validate revenue even when monthly income changes.</small></p></div>
+        <div class="screen-actions"><button class="button secondary" data-back="1" type="button">← Back</button><button class="button primary" data-next="3" type="button">See my document path <span>→</span></button></div>
+      </section>
+
+      <section class="screen" data-screen="3">
+        <div class="screen-header split-header">
+          <div><span class="eyebrow accent">Your document path</span><h1>Only what helps prove your case.</h1><p id="documentIntro">Based on a steady, GST-registered business, these are the most useful documents.</p></div>
+          <div class="readiness-ring" id="readinessRing"><span><strong id="readinessScore">25%</strong><small>ready</small></span></div>
+        </div>
+        <div class="document-layout">
+          <div class="document-list" id="documentList"></div>
+          <aside class="tip-panel">
+            <span class="tip-icon">✦</span>
+            <h3>Why this is different</h3>
+            <p>We don’t ask every borrower for the same bundle. Your checklist adapts to your income profile and registration status.</p>
+            <div class="not-needed"><span>Not needed now</span><s>Salary slips</s><s>Employer letter</s><s>Perfect monthly income</s></div>
+          </aside>
+        </div>
+        <div class="privacy-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3M6 10h12v10H6z"/></svg><p><strong>Your documents stay private.</strong><small>Nothing is uploaded in this prototype. In the real journey, files would be encrypted and used only for underwriting.</small></p></div>
+        <div class="screen-actions"><button class="button secondary" data-back="2" type="button">← Back</button><button class="button primary" data-next="4" type="button">Calculate my fit <span>→</span></button></div>
+      </section>
+
+      <section class="screen" data-screen="4">
+        <div class="result-banner" id="resultBanner">
+          <div class="result-check" id="resultIcon">✓</div>
+          <div><span class="eyebrow light" id="resultEyebrow">You’re eligible to take the next step</span><h1 id="resultTitle">Based on what you’ve shared, there’s a strong fit.</h1><p id="resultCopy">This is an indicative offer—not a final sanction. You can review the logic before deciding to apply.</p></div>
+        </div>
+        <div class="offer-layout" id="positiveResult">
+          <div class="offer-card">
+            <span class="card-kicker">Indicative business loan</span>
+            <div class="amount-label">You may qualify for up to</div>
+            <div class="offer-amount" id="offerAmount">₹8,00,000</div>
+            <div class="offer-metrics">
+              <div><span>Interest rate</span><strong id="rateValue">17.5%–18.7%</strong><small>reducing balance p.a.</small></div>
+              <div><span>Tenure</span><strong id="tenureValue">36 months</strong><small>adjustable below</small></div>
+              <div><span>Indicative EMI</span><strong id="emiValue">₹28,724</strong><small>per month</small></div>
+            </div>
+            <label class="tenure-control"><span><strong>Choose a comfortable tenure</strong><em id="tenureText">36 months</em></span><input id="tenureRange" class="range" type="range" min="12" max="60" step="12" value="36" /><div><small>12 months</small><small>60 months</small></div></label>
+            <button class="explain-toggle" id="emiExplain" type="button"><span>How was this EMI calculated?</span><b>＋</b></button>
+            <div class="emi-explanation" id="emiExplanation"><p>EMI uses the indicative loan amount, selected tenure and the lower end of the rate range on a monthly reducing balance. Final EMI may change after document and bureau verification.</p><div><span>Principal</span><strong id="principalExplain">₹8,00,000</strong></div><div><span>Estimated total interest</span><strong id="interestExplain">₹2,34,064</strong></div></div>
+          </div>
+          <div class="decision-panel">
+            <h3 id="reasonHeading">Signals behind this result</h3>
+            <ul id="reasonList"></ul>
+            <div class="confidence-card"><span><b id="confidenceScore">86</b>/100</span><p><strong id="confidenceLabel">High application confidence</strong><small id="confidenceCopy">Your inputs and available documents show a strong path to verification.</small></p></div>
+            <div class="transparency-note"><strong>What could still change?</strong><p>The final amount or rate may change after bank-statement, KYC and credit-bureau verification. We’ll show any change before you accept.</p></div>
+          </div>
+        </div>
+        <div class="not-eligible-panel" id="negativeResult" hidden>
+          <div class="negative-summary">
+            <span class="card-kicker">A clearer next step</span>
+            <h2>Your profile is not application-ready yet.</h2>
+            <p>We have not run a credit check. The result is based only on the information you shared, and it can improve when the signals below change.</p>
+            <div class="recovery-date"><span>Suggested recheck</span><strong id="recheckWindow">In 3 months</strong></div>
+          </div>
+          <div class="decision-panel">
+            <h3>What affected this result</h3>
+            <ul id="negativeReasonList"></ul>
+            <div class="transparency-note"><strong>This is not a credit rejection.</strong><p>No bureau enquiry was made. You can update your profile or return when your business history and income evidence are stronger.</p></div>
+          </div>
+        </div>
+        <div class="screen-actions sticky-actions"><button class="button secondary" data-back="3" type="button">← Review details</button><button class="button primary wide" id="resultPrimary" data-next="5" type="button">Continue with this offer <span>→</span></button></div>
+      </section>
+
+      <section class="screen" data-screen="5">
+        <div class="completion">
+          <div class="celebrate-mark"><span>✓</span></div>
+          <span class="eyebrow accent">Qualified application ready</span>
+          <h1>You can apply with clarity—not guesswork.</h1>
+          <p>Your profile meets the initial criteria and your document path is clear. A formal application would now start with consent-based KYC and bureau verification.</p>
+          <div class="application-card">
+            <div><small>Qualified amount</small><strong id="finalAmount">₹8,00,000</strong></div>
+            <div><small>Indicative rate</small><strong id="finalRate">17.5%–18.7%</strong></div>
+            <div><small>Selected tenure</small><strong id="finalTenure">36 months</strong></div>
+            <div><small>Application readiness</small><strong id="finalReadiness">86%</strong></div>
+          </div>
+          <div class="next-steps">
+            <h3>What happens after you apply</h3>
+            <ol><li><span>1</span><p><strong>Confirm identity and consent</strong><small>PAN, Aadhaar and explicit bureau permission</small></p></li><li><span>2</span><p><strong>Verify income evidence</strong><small>Secure bank statement and selected documents</small></p></li><li><span>3</span><p><strong>Review the final offer</strong><small>Amount, rate, fees and EMI before acceptance</small></p></li></ol>
+          </div>
+          <div class="button-row centered"><button class="button primary" id="submitPrototype" type="button">Create account & apply <span>→</span></button><button class="button secondary" id="restartButton" type="button">Explore another profile</button></div>
+          <p class="microcopy centered-copy">Prototype endpoint: no personal data is collected and no application will be submitted.</p>
+        </div>
+      </section>
+
+      <section class="screen account-screen" data-screen="6">
+        <div class="auth-layout">
+          <div class="auth-copy">
+            <span class="eyebrow accent">Save your qualified offer</span>
+            <h1>Create your Arthora account.</h1>
+            <p>Your eligibility inputs will carry into the application, so you won’t need to enter the same information again.</p>
+            <div class="carry-card">
+              <span class="carry-icon">↗</span>
+              <div><small>Qualified amount</small><strong id="signupAmount">₹8,00,000</strong></div>
+              <div><small>Time to complete</small><strong>About 6 minutes</strong></div>
+            </div>
+          </div>
+          <form class="auth-card" id="signupForm">
+            <div class="auth-card-head"><span>Secure account setup</span><small>Step 1 of 2</small></div>
+            <label class="field"><span>Full name</span><input id="accountName" autocomplete="name" value="Aarohi Mehta" required /></label>
+            <label class="field"><span>Mobile number</span><input id="accountMobile" inputmode="numeric" autocomplete="tel" value="9876543210" maxlength="10" required /></label>
+            <label class="field"><span>Email address</span><input id="accountEmail" type="email" autocomplete="email" value="aarohi@studio.in" required /></label>
+            <label class="consent-row"><input id="accountConsent" type="checkbox" checked /><span>I agree to receive the verification code and save this eligibility profile to my prototype account.</span></label>
+            <button class="button primary full" type="submit">Send verification code <span>→</span></button>
+            <button class="button text auth-login-link" id="signupToLogin" type="button">Already have an account? Log in</button>
+            <p class="microcopy">Prototype only: no message is sent and no credentials are stored.</p>
+          </form>
+          <form class="auth-card verification-card" id="verificationForm" hidden>
+            <div class="auth-card-head"><span>Verify your account</span><small>Step 2 of 2</small></div>
+            <div class="verification-icon">••••</div>
+            <h2>Enter the 4-digit code</h2>
+            <p>We sent a code to <strong id="verificationTarget">98765 43210</strong>.</p>
+            <label class="field"><span>Verification code</span><input id="signupOtp" inputmode="numeric" autocomplete="one-time-code" value="2468" maxlength="4" required /></label>
+            <div class="prototype-code">Prototype code: <strong>2468</strong></div>
+            <button class="button primary full" type="submit">Verify & continue <span>→</span></button>
+            <button class="button text auth-login-link" id="editSignup" type="button">Edit account details</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="screen account-screen" data-screen="7">
+        <div class="application-flow">
+          <div class="application-flow-head">
+            <div><span class="eyebrow accent">Formal application</span><h1>Complete what verification needs.</h1><p>Your eligibility profile has already been carried forward.</p></div>
+            <div class="saved-state"><i></i> Progress saved</div>
+          </div>
+          <div class="application-stepper" id="applicationStepper">
+            <button class="active" type="button" data-app-step="1"><span>1</span><b>Your details</b></button>
+            <button type="button" data-app-step="2"><span>2</span><b>Documents</b></button>
+            <button type="button" data-app-step="3"><span>3</span><b>Consent & review</b></button>
+          </div>
+          <div class="application-panel active" data-app-panel="1">
+            <div class="section-card">
+              <div class="section-title"><div><span>01</span><h2>Applicant and business details</h2></div><small>Prefilled where possible</small></div>
+              <div class="field-grid">
+                <label class="field"><span>Applicant name</span><input id="applicationName" value="Aarohi Mehta" /></label>
+                <label class="field"><span>PAN</span><input id="applicationPan" value="ARTPM1234Q" maxlength="10" /></label>
+                <label class="field"><span>Business name</span><input value="Aarohi Design Studio" /></label>
+                <label class="field"><span>Business constitution</span><select><option selected>Proprietorship</option><option>Partnership</option><option>Private limited</option><option>Independent professional</option></select></label>
+                <label class="field"><span>City</span><input value="Mumbai" /></label>
+                <label class="field"><span>Industry</span><select><option selected>Professional services</option><option>Retail</option><option>Manufacturing</option><option>Trading</option></select></label>
+              </div>
+              <div class="profile-carried"><span>✓</span><p><strong>Eligibility profile carried forward</strong><small id="carriedProfile">₹3,50,000 monthly revenue · 2–5 years in business · 70% digital receipts</small></p></div>
+            </div>
+            <div class="panel-actions"><button class="button secondary" data-back="5" type="button">← Back</button><button class="button primary" type="button" data-app-next="2">Continue to documents <span>→</span></button></div>
+          </div>
+          <div class="application-panel" data-app-panel="2">
+            <div class="section-card">
+              <div class="section-title"><div><span>02</span><h2>Add the evidence selected for your profile</h2></div><small id="uploadCounter">0 of 3 added</small></div>
+              <div class="upload-list" id="uploadList">
+                <button class="upload-item" type="button" data-upload="PAN"><span class="upload-symbol">＋</span><p><strong>PAN and identity proof</strong><small>PDF, JPG or PNG · up to 10 MB</small></p><b>Add file</b></button>
+                <button class="upload-item" type="button" data-upload="Bank statements"><span class="upload-symbol">＋</span><p><strong>12 months of bank statements</strong><small>PDF preferred · password-protected supported</small></p><b>Add file</b></button>
+                <button class="upload-item" type="button" data-upload="ITR"><span class="upload-symbol">＋</span><p><strong>Latest ITR and computation</strong><small>Income evidence selected for this profile</small></p><b>Add file</b></button>
+              </div>
+              <div class="privacy-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3M6 10h12v10H6z"/></svg><p><strong>Files are not uploaded in this prototype.</strong><small>Adding a file only validates the interaction and updates the dashboard state.</small></p></div>
+            </div>
+            <div class="panel-actions"><button class="button secondary" type="button" data-app-next="1">← Your details</button><button class="button primary" type="button" data-app-next="3">Review & consent <span>→</span></button></div>
+          </div>
+          <div class="application-panel" data-app-panel="3">
+            <div class="review-layout">
+              <div class="section-card">
+                <div class="section-title"><div><span>03</span><h2>Review before verification</h2></div><small>Nothing is final yet</small></div>
+                <dl class="review-list"><div><dt>Loan request</dt><dd id="reviewAmount">₹8,00,000</dd></div><div><dt>Purpose</dt><dd id="reviewPurpose">Working capital</dd></div><div><dt>Indicative rate</dt><dd id="reviewRate">17.5%–18.7%</dd></div><div><dt>Selected tenure</dt><dd id="reviewTenure">36 months</dd></div></dl>
+              </div>
+              <div class="consent-card">
+                <span class="tip-icon">✓</span><h2>Your consent, clearly explained.</h2>
+                <label class="consent-row"><input id="kycConsent" type="checkbox" checked /><span>Verify my identity and submitted business information.</span></label>
+                <label class="consent-row"><input id="bureauConsent" type="checkbox" checked /><span>Run a credit-bureau check after submission. This may appear as a hard enquiry.</span></label>
+                <p>You can review the final sanctioned amount, rate and all fees before accepting any loan.</p>
+              </div>
+            </div>
+            <div class="panel-actions"><button class="button secondary" type="button" data-app-next="2">← Documents</button><button class="button primary" id="submitApplication" type="button">Submit for verification <span>→</span></button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen account-screen dashboard-screen" data-screen="8">
+        <div class="dashboard-head">
+          <div><span class="eyebrow accent">Welcome back, <b id="dashboardFirstName">Aarohi</b></span><h1>Your application is moving forward.</h1><p>Track what has been completed, what is being verified, and what needs your attention.</p></div>
+          <button class="button secondary" id="logoutButton" type="button">Log out</button>
+        </div>
+        <div class="status-hero">
+          <div><span class="status-pill"><i></i> Application received</span><small>Application ID</small><strong>AC-260923-1048</strong><p>Submitted today · Indicative offer held for 7 days</p></div>
+          <div class="status-amount"><small>Indicative loan amount</small><strong id="dashboardAmount">₹8,00,000</strong><span id="dashboardEmi">₹28,724/month · 36 months</span></div>
+        </div>
+        <div class="dashboard-grid">
+          <section class="dashboard-card application-status">
+            <div class="dashboard-card-title"><h2>Application status</h2><span>1 of 4 complete</span></div>
+            <ol><li class="done"><span>✓</span><p><strong>Application received</strong><small>Details and consent recorded</small></p></li><li class="active"><span>2</span><p><strong>Document verification</strong><small>Usually completed within 1 business day</small></p></li><li><span>3</span><p><strong>Credit assessment</strong><small>Starts after documents are verified</small></p></li><li><span>4</span><p><strong>Final offer</strong><small>Review amount, rate, EMI and fees</small></p></li></ol>
+          </section>
+          <aside class="dashboard-stack">
+            <section class="dashboard-card task-card"><span class="card-kicker">Action needed</span><h2 id="taskTitle">Add your remaining documents</h2><p id="taskCopy">Complete the evidence checklist to avoid delays during verification.</p><button class="button primary full" id="dashboardTask" type="button">Review documents <span>→</span></button></section>
+            <section class="dashboard-card help-card"><h3>Need help?</h3><p>Speak to an Arthora application specialist without losing your progress.</p><button class="button text" id="dashboardHelp" type="button">Get support →</button></section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen account-screen" data-screen="9">
+        <div class="auth-layout login-layout">
+          <div class="auth-copy"><span class="eyebrow accent">Your Arthora account</span><h1>Return to your application.</h1><p>Use the mobile number or email linked to your account. We’ll verify it with a one-time code.</p><div class="login-benefits"><span>✓ Track application status</span><span>✓ Complete pending documents</span><span>✓ Review the final offer</span></div></div>
+          <form class="auth-card" id="loginForm">
+            <div class="auth-card-head"><span>Secure login</span><small>No password needed</small></div>
+            <label class="field"><span>Mobile number or email</span><input id="loginIdentity" autocomplete="username" value="aarohi@studio.in" required /></label>
+            <div id="loginOtpWrap" hidden><label class="field"><span>4-digit verification code</span><input id="loginOtp" inputmode="numeric" autocomplete="one-time-code" value="2468" maxlength="4" /></label><div class="prototype-code">Prototype code: <strong>2468</strong></div></div>
+            <button class="button primary full" id="loginSubmit" type="submit">Send verification code <span>→</span></button>
+            <button class="button text auth-login-link" id="loginToEligibility" type="button">New to Arthora? Check eligibility</button>
+            <p class="microcopy">Prototype only: authentication is simulated and no account data is stored.</p>
+          </form>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="supportModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="supportTitle">
+      <button class="modal-close" id="closeSupport" type="button" aria-label="Close">×</button>
+      <span class="modal-icon">✦</span><h2 id="supportTitle">Need help understanding a question?</h2>
+      <p>A real journey could offer a call, WhatsApp conversation, or co-browsing without forcing the borrower to abandon progress.</p>
+      <button class="button primary" id="supportDone" type="button">Got it</button>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
