@@ -54,6 +54,7 @@ function goTo(screen) {
   input('mobileLabel').textContent = stepNames[progressIndex];
   input('progressFill').style.width = `${(progressIndex + 1) * 20}%`;
   updateAccountActions();
+  if (input('aiPanel').classList.contains('open')) renderAiContext();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -452,15 +453,107 @@ input('loginForm').addEventListener('submit', event => {
 });
 input('loginToEligibility').addEventListener('click', () => goTo(1));
 input('dashboardTask').addEventListener('click', () => { state.appStep = 2; goTo(7); });
-input('dashboardHelp').addEventListener('click', () => { input('supportModal').hidden = false; input('closeSupport').focus(); });
+input('dashboardHelp').addEventListener('click', openAiGuide);
 
-const supportModal = input('supportModal');
-input('supportButton').addEventListener('click', () => { supportModal.hidden = false; input('closeSupport').focus(); });
-function closeSupport() { supportModal.hidden = true; input('supportButton').focus(); }
-input('closeSupport').addEventListener('click', closeSupport);
-input('supportDone').addEventListener('click', closeSupport);
-supportModal.addEventListener('click', e => { if (e.target === supportModal) closeSupport(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && !supportModal.hidden) closeSupport(); });
+const aiContexts = {
+  0: { label: 'Getting started', prompts: ['What will I learn before applying?', 'Will this affect my credit score?', 'How long will this take?'] },
+  1: { label: 'Your loan requirement', prompts: ['Why do you need business vintage?', 'How much should I request?', 'Does loan purpose affect eligibility?'] },
+  2: { label: 'Your income profile', prompts: ['Help me describe my income', 'Most customers pay me in cash', 'Why do existing EMIs matter?'] },
+  3: { label: 'Your document path', prompts: ['Which document should I use?', 'I do not have an ITR', 'Why do you need bank statements?'] },
+  4: { label: 'Your eligibility result', prompts: ['Explain my eligibility result', 'How was my amount calculated?', 'What can I improve?'] },
+  5: { label: 'Your next step', prompts: ['What happens after I apply?', 'Can my final offer change?', 'What permissions will you need?'] },
+  6: { label: 'Creating your account', prompts: ['Why create an account?', 'Is my information saved?', 'What is the verification code?'] },
+  7: { label: 'Completing your application', prompts: ['Which documents are still needed?', 'Why do you need bureau consent?', 'Can I finish this later?'] },
+  8: { label: 'Tracking your application', prompts: ['What should I do next?', 'What does verification mean?', 'How can I get human help?'] },
+  9: { label: 'Secure login', prompts: ['Why is there no password?', 'What is the prototype code?', 'Is this a real account?'] }
+};
+
+function openAiGuide() {
+  input('aiPanel').classList.add('open');
+  input('aiPanel').setAttribute('aria-hidden', 'false');
+  input('aiBackdrop').hidden = false;
+  document.body.classList.add('ai-open');
+  renderAiContext();
+  setTimeout(() => input('aiInput').focus(), 120);
+}
+
+function closeAiGuide() {
+  input('aiPanel').classList.remove('open');
+  input('aiPanel').setAttribute('aria-hidden', 'true');
+  input('aiBackdrop').hidden = true;
+  document.body.classList.remove('ai-open');
+}
+
+function renderAiContext() {
+  const context = aiContexts[state.screen] || aiContexts[0];
+  input('aiContextLabel').textContent = context.label;
+  input('aiSuggestions').innerHTML = context.prompts.map(prompt => `<button type="button">${prompt}</button>`).join('');
+}
+
+function addAiMessage(text, role) {
+  const message = document.createElement('div');
+  message.className = `ai-message ${role}`;
+  if (role === 'assistant') {
+    const avatar = document.createElement('span');
+    avatar.className = 'ai-avatar';
+    avatar.textContent = '✦';
+    message.appendChild(avatar);
+  }
+  const copy = document.createElement('p');
+  copy.textContent = text;
+  message.appendChild(copy);
+  input('aiMessages').appendChild(message);
+  input('aiMessages').scrollTop = input('aiMessages').scrollHeight;
+}
+
+function aiAnswer(question) {
+  const q = question.toLowerCase();
+  const eligibility = getEligibility();
+  if (q.includes('credit score') || q.includes('bureau')) return 'The eligibility check does not affect your credit score. A bureau check would happen only during the formal application, after you give explicit consent.';
+  if (q.includes('cash')) return 'Select “Mixed payments.” Cash income can be supported with regular bank deposits, GST returns, invoices, a ledger or an accountant-certified statement. Your document path will adapt.';
+  if (q.includes('itr')) return state.itr === 'yes' ? 'Your latest ITR is useful because it provides a verified annual view of income. Bank statements and GST returns still help explain recent cash flow.' : 'You can continue without an ITR in this prototype. Invoices, bank or UPI statements, a business ledger and accountant-certified financials can provide alternative evidence.';
+  if (q.includes('bank statement')) return 'Bank statements help verify cash-flow consistency, existing obligations and the relationship between stated revenue and actual credits. Seasonal businesses benefit from a full 12-month view.';
+  if (q.includes('income')) return `Your current profile is “${profileLabels[state.incomeProfile]}.” Choose the pattern that best represents how money usually arrives—not your strongest month.`;
+  if (q.includes('emi')) return `Existing EMIs currently use about ${Math.round(eligibility.debtRatio * 100)}% of the monthly revenue you entered. A higher repayment load can reduce comfortable borrowing capacity.`;
+  if (q.includes('amount') || q.includes('calculated')) return `The indicative amount considers monthly revenue, business vintage, income pattern, existing EMIs, visible digital receipts and available evidence. Based on the current inputs, estimated capacity is about ${money(eligibility.capacity)}.`;
+  if (q.includes('eligibility') || q.includes('result')) {
+    const positives = eligibility.signals.filter(signal => signal.tone === 'positive').map(signal => signal.title.toLowerCase());
+    const concerns = eligibility.signals.filter(signal => signal.tone !== 'positive').map(signal => signal.title.toLowerCase());
+    return eligibility.status === 'positive' ? `Your initial fit is positive. Helpful signals include ${positives.slice(0, 2).join(' and ')}. This remains indicative until documents, KYC and bureau information are verified.` : `You are not application-ready yet. The main areas to address are ${concerns.slice(0, 2).join(' and ')}. No bureau enquiry has been made.`;
+  }
+  if (q.includes('improve')) {
+    const concerns = eligibility.signals.filter(signal => signal.tone !== 'positive');
+    return concerns.length ? `The clearest next step is to address “${concerns[0].title}.” ${concerns[0].note}` : 'Your current profile has a strong initial fit. Completing the recommended documents would make verification smoother.';
+  }
+  if (q.includes('document')) return `For this profile, the most useful evidence is: ${getDocuments().slice(0, 3).map(doc => doc.title).join(', ')}. You can mark what is already available on the document step.`;
+  if (q.includes('verification code') || q.includes('prototype code')) return 'Use 2468 as the verification code in this prototype. It does not create a real account.';
+  if (q.includes('real account') || q.includes('saved')) return 'No real account, document upload, bureau check or loan application is created in this prototype. The interaction only demonstrates the intended experience.';
+  if (q.includes('after') || q.includes('next')) return 'After an eligible result, you can create an account, confirm application details, add documents, provide KYC and bureau consent, submit for verification and track progress on the dashboard.';
+  if (q.includes('change') || q.includes('guarantee') || q.includes('approve')) return 'The amount, rate and EMI are indicative. They may change after document, KYC and bureau verification. The final terms should always be shown before acceptance.';
+  if (q.includes('human') || q.includes('call') || q.includes('support')) return 'A production journey could connect you to an Arthora application specialist by phone, WhatsApp or co-browsing without losing your progress.';
+  return 'I can help explain this step, identify suitable documents, clarify your eligibility signals or suggest the next action. I cannot approve a loan or guarantee eligibility.';
+}
+
+function submitAiQuestion(question) {
+  const clean = question.trim();
+  if (!clean) return;
+  addAiMessage(clean, 'user');
+  input('aiInput').value = '';
+  const typing = document.createElement('div');
+  typing.className = 'ai-typing';
+  typing.textContent = 'Arthora is reviewing this step…';
+  input('aiMessages').appendChild(typing);
+  input('aiMessages').scrollTop = input('aiMessages').scrollHeight;
+  setTimeout(() => { typing.remove(); addAiMessage(aiAnswer(clean), 'assistant'); }, 420);
+}
+
+input('aiTopButton').addEventListener('click', openAiGuide);
+input('aiLaunch').addEventListener('click', openAiGuide);
+input('aiClose').addEventListener('click', closeAiGuide);
+input('aiBackdrop').addEventListener('click', closeAiGuide);
+input('aiSuggestions').addEventListener('click', event => { const button = event.target.closest('button'); if (button) submitAiQuestion(button.textContent); });
+input('aiForm').addEventListener('submit', event => { event.preventDefault(); submitAiQuestion(input('aiInput').value); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && input('aiPanel').classList.contains('open')) closeAiGuide(); });
 
 let toastTimer;
 function showToast(message) {
