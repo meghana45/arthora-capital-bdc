@@ -586,9 +586,9 @@ h1, .screen-header h1, .result-banner h1, .completion h1 {
   padding-inline: clamp(32px, 7vw, 110px);
 }
 .intro-active .screen[data-screen="0"] .hero-grid {
-  grid-template-columns: minmax(0, 1.2fr) minmax(330px, .62fr);
+  grid-template-columns: minmax(0, 780px);
   min-height: calc(100vh - 225px);
-  gap: clamp(54px, 8vw, 130px);
+  gap: 0;
 }
 .intro-active .hero-grid > div:first-child { max-width: 780px; }
 .intro-active .hero-grid h1 { max-width: 770px; }
